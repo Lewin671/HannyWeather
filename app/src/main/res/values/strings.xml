@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">HannyWeather</string>
+    <string name="searchPlaceEditHint">请输入地址</string>
 </resources>
