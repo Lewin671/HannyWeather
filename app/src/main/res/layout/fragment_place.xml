@@ -21,11 +21,10 @@
             android:layout_gravity="center_vertical"
             android:autofillHints=""
             android:background="@drawable/search_bg"
-            android:imeOptions="actionSearch"
-            android:inputType="text"
             android:ems="10"
             android:hint="@string/searchPlaceEditHint"
-            />
+            android:imeOptions="actionSearch"
+            android:inputType="text" />
     </FrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView
