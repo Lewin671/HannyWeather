@@ -2,8 +2,7 @@ package com.example.hannyweather.ui.place
 
 import android.content.Context
 import android.os.Bundle
-import android.text.InputType
-import android.view.KeyEvent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,9 +11,9 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.hannyweather.HannyWeatherApplication
 import com.example.hannyweather.R
 import com.example.hannyweather.databinding.FragmentPlaceBinding
 import com.example.hannyweather.viewmodel.PlaceViewModel
@@ -67,9 +66,13 @@ class PlaceFragment : Fragment() {
 
         binding.searchPlaceEdit.setOnEditorActionListener { _, actionId, _ ->
             // 隐藏键盘
-            if(actionId == EditorInfo.IME_ACTION_SEARCH){
-                val inputMethodManager = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                inputMethodManager.hideSoftInputFromWindow(view?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                val inputMethodManager =
+                    activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                inputMethodManager.hideSoftInputFromWindow(
+                    view?.windowToken,
+                    InputMethodManager.HIDE_NOT_ALWAYS
+                )
             }
             true
         }
@@ -77,6 +80,7 @@ class PlaceFragment : Fragment() {
 
         viewModel.placeLiveData.observe(viewLifecycleOwner, {
             val places = it.getOrNull()
+            Log.d(HannyWeatherApplication.DEBUG_TAG,places.toString())
             if (places != null) {
                 binding.recyclerView.visibility = View.VISIBLE
                 binding.placeFragmentLayout.background = null
