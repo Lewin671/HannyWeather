@@ -1,9 +1,14 @@
 package com.example.hannyweather.ui.place
 
+import android.content.Context
 import android.os.Bundle
+import android.text.InputType
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -59,6 +64,16 @@ class PlaceFragment : Fragment() {
                 adapter.notifyDataSetChanged()
             }
         }
+
+        binding.searchPlaceEdit.setOnEditorActionListener { _, actionId, _ ->
+            // 隐藏键盘
+            if(actionId == EditorInfo.IME_ACTION_SEARCH){
+                val inputMethodManager = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                inputMethodManager.hideSoftInputFromWindow(view?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+            }
+            true
+        }
+
 
         viewModel.placeLiveData.observe(viewLifecycleOwner, {
             val places = it.getOrNull()
