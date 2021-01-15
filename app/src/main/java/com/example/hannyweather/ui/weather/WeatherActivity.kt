@@ -1,18 +1,23 @@
 package com.example.hannyweather.ui.weather
 
+import android.content.Context
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import com.example.hannyweather.R
-import com.example.hannyweather.R.*
+import com.example.hannyweather.R.id
+import com.example.hannyweather.R.layout
 import com.example.hannyweather.databinding.ActivityWeatherBinding
 import com.example.hannyweather.logic.model.Weather
 import com.example.hannyweather.logic.model.getSky
@@ -21,8 +26,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class WeatherActivity : AppCompatActivity() {
-    private val viewModel by lazy { ViewModelProvider(this).get(WeatherViewModel::class.java) }
-    private lateinit var binding: ActivityWeatherBinding
+    val viewModel by lazy { ViewModelProvider(this).get(WeatherViewModel::class.java) }
+    public lateinit var binding: ActivityWeatherBinding
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,14 +66,43 @@ class WeatherActivity : AppCompatActivity() {
         }
         //viewModel.refreshWeather(viewModel.locationLng, viewModel.locationLat)
         refreshWeather()
-        binding.swipeRefresh.setColorSchemeColors(resources.getColor(R.color.colorPrimary,theme))
+        // 下拉刷新响应
+        binding.swipeRefresh.setColorSchemeColors(resources.getColor(R.color.colorPrimary, theme))
         binding.swipeRefresh.setOnRefreshListener {
             refreshWeather()
-            Toast.makeText(this,"刷新成功",Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "刷新成功", Toast.LENGTH_SHORT).show()
         }
+
+        // 导航栏按钮
+        val navBtn = binding.now.navBtn
+        val drawLayout = binding.drawerLayout
+
+        navBtn.setOnClickListener {
+            drawLayout.openDrawer(GravityCompat.START)
+        }
+
+        drawLayout.addDrawerListener(object : DrawerLayout.DrawerListener {
+            override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
+
+            }
+
+            override fun onDrawerOpened(drawerView: View) {
+
+            }
+
+            override fun onDrawerClosed(drawerView: View) {
+                val manager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                manager.hideSoftInputFromWindow(drawerView.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+            }
+
+            override fun onDrawerStateChanged(newState: Int) {
+
+            }
+
+        })
     }
 
-    private fun refreshWeather(){
+    fun refreshWeather() {
         viewModel.refreshWeather(viewModel.locationLng, viewModel.locationLat)
         binding.swipeRefresh.isRefreshing = true
     }

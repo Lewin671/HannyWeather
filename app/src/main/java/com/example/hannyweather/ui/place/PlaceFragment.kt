@@ -47,7 +47,7 @@ class PlaceFragment : Fragment() {
         // 加载缓存数据
         // activity is MainActivity 这句话很重要
         // Log.d(HannyWeatherApplication.DEBUG_TAG,"当前活动: $activity")
-        if ( activity is MainActivity  && viewModel.isPlaceSaved()) {
+        if (activity is MainActivity && viewModel.isPlaceSaved()) {
             val place = viewModel.getSavedPlace()
             val intent = Intent(context, WeatherActivity::class.java).apply {
                 putExtra("location_lng", place.location.lng)
