@@ -1,25 +1,25 @@
 package com.example.hannyweather.ui.place
 
-import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.hannyweather.HannyWeatherApplication
+import com.example.hannyweather.MainActivity
 import com.example.hannyweather.R
 import com.example.hannyweather.databinding.FragmentPlaceBinding
+import com.example.hannyweather.ui.weather.WeatherActivity
 import com.example.hannyweather.viewmodel.PlaceViewModel
 
 class PlaceFragment : Fragment() {
-    private val viewModel by lazy {
+    val viewModel by lazy {
         ViewModelProvider(this).get(PlaceViewModel::class.java)
     }
 
@@ -32,9 +32,9 @@ class PlaceFragment : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View {
         // 加载Place页面
         _binding = FragmentPlaceBinding.inflate(layoutInflater, container, false)
@@ -44,11 +44,26 @@ class PlaceFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        // 加载缓存数据
+        // activity is MainActivity 这句话很重要
+        // Log.d(HannyWeatherApplication.DEBUG_TAG,"当前活动: $activity")
+        if ( activity is MainActivity  && viewModel.isPlaceSaved()) {
+            val place = viewModel.getSavedPlace()
+            val intent = Intent(context, WeatherActivity::class.java).apply {
+                putExtra("location_lng", place.location.lng)
+                putExtra("location_lat", place.location.lat)
+                putExtra("place_name", place.name)
+            }
+            startActivity(intent)
+            activity?.finish()
+            return
+        }
+
         val layoutManager = LinearLayoutManager(activity)
 
         // 配置recyclerView
         binding.recyclerView.layoutManager = layoutManager
-        adapter = PlaceAdapter(viewModel.placeList)
+        adapter = PlaceAdapter(viewModel.placeList, this)
         binding.recyclerView.adapter = adapter
 
         binding.searchPlaceEdit.addTextChangedListener {
@@ -64,6 +79,7 @@ class PlaceFragment : Fragment() {
             }
         }
 
+        /*
         binding.searchPlaceEdit.setOnEditorActionListener { _, actionId, _ ->
             // 隐藏键盘
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
@@ -76,11 +92,12 @@ class PlaceFragment : Fragment() {
             }
             true
         }
+         */
 
 
         viewModel.placeLiveData.observe(viewLifecycleOwner, {
             val places = it.getOrNull()
-            Log.d(HannyWeatherApplication.DEBUG_TAG,places.toString())
+            Log.d(HannyWeatherApplication.DEBUG_TAG, places.toString())
             if (places != null) {
                 binding.recyclerView.visibility = View.VISIBLE
                 binding.placeFragmentLayout.background = null

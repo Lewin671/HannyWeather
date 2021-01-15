@@ -11,8 +11,8 @@ interface WeatherService {
     // lng和lat分别为经度和纬度
     @GET("v2.5/${HannyWeatherApplication.TOKEN}/{lng},{lat}/realtime.json")
     fun getRealTimeWeather(
-        @Path("lng") lng: String,
-        @Path("lat") lat: String
+            @Path("lng") lng: String,
+            @Path("lat") lat: String
     ): Call<RealTimeResponse>
 
     @GET("/v2.5/${HannyWeatherApplication.TOKEN}/{lng},{lat}/daily.json")
