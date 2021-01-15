@@ -12,6 +12,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.hannyweather.R
+import com.example.hannyweather.R.*
 import com.example.hannyweather.databinding.ActivityWeatherBinding
 import com.example.hannyweather.logic.model.Weather
 import com.example.hannyweather.logic.model.getSky
@@ -55,11 +56,23 @@ class WeatherActivity : AppCompatActivity() {
             } else {
                 showWeatherInfo(weather)
             }
+
+            binding.swipeRefresh.isRefreshing = false
         }
-        viewModel.refreshWeather(viewModel.locationLng, viewModel.locationLat)
+        //viewModel.refreshWeather(viewModel.locationLng, viewModel.locationLat)
+        refreshWeather()
+        binding.swipeRefresh.setColorSchemeColors(resources.getColor(R.color.colorPrimary,theme))
+        binding.swipeRefresh.setOnRefreshListener {
+            refreshWeather()
+            Toast.makeText(this,"刷新成功",Toast.LENGTH_SHORT).show()
+        }
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
+    private fun refreshWeather(){
+        viewModel.refreshWeather(viewModel.locationLng, viewModel.locationLat)
+        binding.swipeRefresh.isRefreshing = true
+    }
+
     private fun showWeatherInfo(weather: Weather) {
         binding.now.placeName.text = viewModel.placeName
         val realtime = weather.realtime
@@ -83,13 +96,13 @@ class WeatherActivity : AppCompatActivity() {
             val skycon = daily.skycon[i]
             val temperature = daily.temperature[i]
             val view = LayoutInflater.from(this).inflate(
-                    R.layout.forecast_item,
+                    layout.forecast_item,
                     forecastBinding.forecastLayout, false
             )
-            val dateInfo = view.findViewById<TextView>(R.id.dataInfo)
-            val skyIcon = view.findViewById<ImageView>(R.id.skyIcon)
-            val skyInfo = view.findViewById<TextView>(R.id.skyInfo)
-            val temperatureInfo = view.findViewById<TextView>(R.id.temperatureInfo)
+            val dateInfo = view.findViewById<TextView>(id.dataInfo)
+            val skyIcon = view.findViewById<ImageView>(id.skyIcon)
+            val skyInfo = view.findViewById<TextView>(id.skyInfo)
+            val temperatureInfo = view.findViewById<TextView>(id.temperatureInfo)
             val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
             dateInfo.text = simpleDateFormat.format(skycon.date)
             val sky = getSky(skycon.value)
