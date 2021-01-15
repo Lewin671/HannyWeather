@@ -46,6 +46,8 @@ class PlaceFragment : Fragment() {
 
         // 加载缓存数据
         // activity is MainActivity 这句话很重要
+        // 因为在WeatherActivity中引用了当前Fragment
+        // 这样会导致无效循环的情况
         // Log.d(HannyWeatherApplication.DEBUG_TAG,"当前活动: $activity")
         if (activity is MainActivity && viewModel.isPlaceSaved()) {
             val place = viewModel.getSavedPlace()
