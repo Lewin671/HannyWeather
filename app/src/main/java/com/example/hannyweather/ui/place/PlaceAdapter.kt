@@ -19,15 +19,12 @@ class PlaceAdapter(private val placeList: List<Place>, private val fragment: Pla
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaceViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.place_item, parent, false)
-        return PlaceViewHolder(view)
-    }
+        val holder = PlaceViewHolder(view)
 
-    override fun onBindViewHolder(holder: PlaceViewHolder, position: Int) {
-        val place = placeList[position]
-        holder.placeName.text = place.name
-        holder.placeAddress.text = place.address
-
+        // 绑定holder的每个itemView的点击事件
         holder.itemView.setOnClickListener {
+            val position = holder.absoluteAdapterPosition
+            val place = placeList[position]
             // 如果当前Activity本身就是在WeatherActivity中
             // 则不需要再启动新的Activity，只需刷新数据即可
             val activity = fragment.activity
@@ -47,6 +44,14 @@ class PlaceAdapter(private val placeList: List<Place>, private val fragment: Pla
             }
             fragment.viewModel.savePlace(place)
         }
+
+        return holder
+    }
+
+    override fun onBindViewHolder(holder: PlaceViewHolder, position: Int) {
+        val place = placeList[position]
+        holder.placeName.text = place.name
+        holder.placeAddress.text = place.address
     }
 
     override fun getItemCount(): Int = placeList.size
