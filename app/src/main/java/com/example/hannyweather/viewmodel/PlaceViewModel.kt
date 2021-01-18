@@ -1,5 +1,6 @@
 package com.example.hannyweather.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
@@ -12,8 +13,8 @@ class PlaceViewModel : ViewModel() {
 
     val placeList = ArrayList<Place>()
 
-    val placeLiveData = Transformations.switchMap(searchLiveData) { query ->
-        Repository.searchPlaces(query)
+    val placeLiveData: LiveData<Result<List<Place>>> = Transformations.switchMap(searchLiveData) {
+        Repository.searchPlaces(it)
     }
 
     fun searchPlaces(query: String) {
