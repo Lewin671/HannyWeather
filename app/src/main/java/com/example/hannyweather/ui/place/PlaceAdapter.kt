@@ -28,13 +28,13 @@ class PlaceAdapter(private val placeList: List<Place>, private val fragment: Pla
             // 如果当前Activity本身就是在WeatherActivity中
             // 则不需要再启动新的Activity，只需刷新数据即可
             val activity = fragment.activity
-            if(activity is WeatherActivity){
+            if (activity is WeatherActivity) {
                 activity.binding.drawerLayout.closeDrawers()
                 activity.viewModel.locationLng = place.location.lng
                 activity.viewModel.locationLat = place.location.lat
                 activity.viewModel.placeName = place.name
                 activity.refreshWeather()
-            }else {
+            } else {
                 val intent = Intent(fragment.activity, WeatherActivity::class.java).apply {
                     putExtra("location_lng", place.location.lng)
                     putExtra("location_lat", place.location.lat)

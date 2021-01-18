@@ -2,16 +2,15 @@ package com.example.hannyweather.ui.place
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.hannyweather.HannyWeatherApplication
 import com.example.hannyweather.MainActivity
 import com.example.hannyweather.R
 import com.example.hannyweather.databinding.FragmentPlaceBinding
@@ -30,6 +29,13 @@ class PlaceFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+
+    // 搜索延迟,搜索输入不是直接请求数据，而是延迟一段时间再进行异步请求
+    val delay: Long = 600
+
+    // after the monitor the search view change for a delayed time ${delay}
+    var runnable: Runnable? = null
+
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -68,18 +74,41 @@ class PlaceFragment : Fragment() {
         adapter = PlaceAdapter(viewModel.placeList, this)
         binding.recyclerView.adapter = adapter
 
-        binding.searchPlaceEdit.addTextChangedListener {
-            val content = it.toString()
-            if (content.isNotEmpty()) {
-                // 更新viewModel的liveData，让其观察到
-                viewModel.searchPlaces(content)
-            } else {
-                binding.recyclerView.visibility = View.GONE
-                binding.placeFragmentLayout.setBackgroundResource(R.drawable.bg_place)
-                viewModel.placeList.clear()
-                adapter.notifyDataSetChanged()
+        // 配置EditText
+        binding.searchPlaceEdit.addTextChangedListener(object : TextWatcher {
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
             }
-        }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                binding.searchPlaceEdit.removeCallbacks(runnable)
+                runnable = null
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                if (runnable == null) {
+                    runnable = Runnable {
+                        val content = s.toString().trim() // 去掉前后的空格
+
+                        if (content.isEmpty()) {
+                            // 如果搜索内容为空，直接隐藏recyclerList
+                            binding.recyclerView.visibility = View.GONE
+                            binding.placeFragmentLayout.setBackgroundResource(R.drawable.bg_place)
+                            viewModel.placeList.clear()
+                            adapter.notifyDataSetChanged()
+                        } else {
+                            // 更新viewModel的liveData，让其观察到
+                            viewModel.searchPlaces(content)
+                        }
+                    }
+                }
+
+                binding.searchPlaceEdit.postDelayed(runnable, delay)
+            }
+
+        })
+
 
         /*
         binding.searchPlaceEdit.setOnEditorActionListener { _, actionId, _ ->
@@ -98,8 +127,8 @@ class PlaceFragment : Fragment() {
 
 
         viewModel.placeLiveData.observe(viewLifecycleOwner, {
+
             val places = it.getOrNull()
-            Log.d(HannyWeatherApplication.DEBUG_TAG, places.toString())
             if (places != null) {
                 binding.recyclerView.visibility = View.VISIBLE
                 binding.placeFragmentLayout.background = null
@@ -110,6 +139,7 @@ class PlaceFragment : Fragment() {
                 Toast.makeText(activity, "未能查询到任何地点", Toast.LENGTH_SHORT).show()
                 it.exceptionOrNull()?.printStackTrace()
             }
+
         })
     }
 

@@ -1,11 +1,11 @@
 package com.example.hannyweather.logic.network
 
+import kotlinx.coroutines.suspendCancellableCoroutine
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
-import kotlin.coroutines.suspendCoroutine
 
 // 网络数据源入口
 object HannyWeatherNetwork {
@@ -21,7 +21,7 @@ object HannyWeatherNetwork {
 
     // 创建一个挂起协程来获取数据
     private suspend fun <T> Call<T>.await(): T {
-        return suspendCoroutine { continuation ->
+        return suspendCancellableCoroutine { continuation ->
             enqueue(object : Callback<T> {
                 override fun onResponse(call: Call<T>, response: Response<T>) {
                     val body = response.body()
