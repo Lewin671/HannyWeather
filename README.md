@@ -33,7 +33,7 @@
 ### 展望
 
 - [ ] 规范化Material Design，美化页面
-- [ ] 将RelativeLayout替换成ConstraintLayout，优化布局
+- [x] 将RelativeLayout替换成ConstraintLayout，优化布局
 - [ ] 实现多城市同时保存
 - [ ] 适配深色主题
 - [ ] 添加可选登陆同步功能
