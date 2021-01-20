@@ -11,4 +11,5 @@
     <string name="coldIcon">感冒图标</string>
     <string name="ultravioletIcon">紫外线图标</string>
     <string name="carWashingIcon">洗车图标</string>
+    <string name="forecast">预报</string>
 </resources>
