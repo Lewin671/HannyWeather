@@ -2,4 +2,14 @@
     <string name="app_name">HannyWeather</string>
     <string name="searchPlaceEditHint">请输入地址</string>
     <string name="skyIconDescription">显示天气图像</string>
+    <string name="cold">感冒</string>
+    <string name="lifeIndex">生活指数</string>
+    <string name="clothing">穿衣</string>
+    <string name="liveUltraviolet">实时紫外线</string>
+    <string name="carWashing">洗车</string>
+    <string name="clothingIcon">穿衣图标</string>
+    <string name="coldIcon">感冒图标</string>
+    <string name="ultravioletIcon">紫外线图标</string>
+    <string name="carWashingIcon">洗车图标</string>
+    <string name="forecast">预报</string>
 </resources>

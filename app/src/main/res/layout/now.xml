@@ -1,84 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nowLayout"
     android:layout_width="match_parent"
-    android:layout_height="530dp"
-    android:orientation="vertical">
+    android:layout_height="530dp">
 
-    <FrameLayout
-        android:id="@+id/titleLayout"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:fitsSystemWindows="true">
 
-        <Button
-            android:id="@+id/navBtn"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="15dp"
-            android:background="@drawable/ic_home" />
+    <Button
+        android:id="@+id/navBtn"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="139dp"
+        android:background="@drawable/ic_home"
+        app:layout_constraintBottom_toBottomOf="@+id/placeName"
+        app:layout_constraintEnd_toStartOf="@+id/placeName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/placeName"
+        app:layout_constraintVertical_bias="1.0" />
 
-        <TextView
-            android:id="@+id/placeName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="60dp"
-            android:layout_marginEnd="60dp"
-            android:ellipsize="middle"
-            android:singleLine="true"
-            android:textColor="#fff"
-            android:textSize="22sp" />
 
-    </FrameLayout>
-
-    <LinearLayout
-        android:id="@+id/bodyLayout"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/placeName"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:orientation="vertical">
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="183dp"
+        android:ellipsize="middle"
+        android:singleLine="true"
+        android:textColor="#fff"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/navBtn"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="深圳" />
 
-        <TextView
-            android:id="@+id/currentTemp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:textColor="#fff"
-            android:textSize="70sp" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp">
+    <TextView
+        android:id="@+id/currentTemp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="192dp"
+        android:textColor="#fff"
+        android:textSize="70sp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline10"
+        app:layout_constraintStart_toStartOf="@+id/guideline10"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="19C" />
 
-            <TextView
-                android:id="@+id/currentSky"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#fff"
-                android:textSize="18sp" />
+    <TextView
+        android:id="@+id/currentSky"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="13dp"
+        android:textColor="#fff"
+        android:textSize="18sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textView2"
+        app:layout_constraintEnd_toStartOf="@+id/textView2"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="多云" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="13dp"
-                android:text="|"
-                android:textColor="#fff"
-                android:textSize="18sp" />
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="21dp"
+        android:layout_marginEnd="12dp"
+        android:textColor="#fff"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/currentAQI"
+        app:layout_constraintStart_toEndOf="@+id/currentSky"
+        app:layout_constraintTop_toBottomOf="@+id/currentTemp"
+        tools:text="空气指数" />
 
-            <TextView
-                android:id="@+id/currentAQI"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="13dp"
-                android:textColor="#fff"
-                android:textSize="18sp" />
+    <TextView
+        android:id="@+id/currentAQI"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#fff"
+        android:textSize="18sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView2"
+        tools:text="59" />
 
-        </LinearLayout>
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
 
-    </LinearLayout>
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
