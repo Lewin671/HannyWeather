@@ -9,9 +9,9 @@ object ServiceCreator {
 
     // retrofit对象
     private val retrofit: Retrofit = Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+        .baseUrl(BASE_URL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
 
     // 两种创建Retrofit代理对象的方法
     // val appService = ServiceCreator.create(AppService::class.java)
