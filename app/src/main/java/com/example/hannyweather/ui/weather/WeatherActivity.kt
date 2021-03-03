@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -56,10 +57,21 @@ class WeatherActivity : AppCompatActivity() {
             val weather = it.getOrNull()
 
             if (weather == null) {
-                Toast.makeText(this, "无法成功获取天气信息", Toast.LENGTH_SHORT).show()
-                it.exceptionOrNull()?.printStackTrace()
+                //Toast.makeText(this, "无法成功获取天气信息", Toast.LENGTH_SHORT).show()
+                // it.exceptionOrNull()?.printStackTrace()
+                AlertDialog.Builder(this)
+                        .setTitle("⚠️")
+                        .setMessage("连接网络失败")
+                        .setCancelable(false)
+                        .setNegativeButton("关闭App"){
+                            _,_ -> finish()
+                        }
+                        .setPositiveButton("OK"){
+                            _,_ -> {}
+                        }.show()
             } else {
                 showWeatherInfo(weather)
+                Toast.makeText(this, "天气请求成功", Toast.LENGTH_SHORT).show()
             }
 
             binding.swipeRefresh.isRefreshing = false
@@ -70,7 +82,6 @@ class WeatherActivity : AppCompatActivity() {
         binding.swipeRefresh.setColorSchemeColors(resources.getColor(R.color.colorPrimary, theme))
         binding.swipeRefresh.setOnRefreshListener {
             refreshWeather()
-            Toast.makeText(this, "刷新成功", Toast.LENGTH_SHORT).show()
         }
 
         // 导航栏按钮
