@@ -9,8 +9,8 @@ object Logger {
     private const val WARN = 4
     private const val ERROR = 5
     private const val RELEASE = 6
-    private const val level = RELEASE
-    private const val TAG = "MyLoggerTag"
+    private const val level = DEBUG
+    private const val TAG = "myLog"
 
     private fun templateBlock(msg: String, block: (String, String) -> Unit) {
         block(TAG, msg)
